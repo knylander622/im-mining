@@ -31,10 +31,13 @@ public class IAMMUSIC
 {
     // Define mod id in a common place for everything to reference
     public static final String MODID = "iammusic";
+    
     // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
+    
     // Create a Deferred Register to hold Blocks which will all be registered under the "examplemod" namespace
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
+    
     // Create a Deferred Register to hold Items which will all be registered under the "examplemod" namespace
     public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MODID);
 
@@ -50,6 +53,20 @@ public class IAMMUSIC
                         .rarity(Rarity.RARE),
                 3600));
 
+                //Music Disc 2 Template:
+                //Sound
+    public static final RegistryObject<SoundEvent> CASHIN = SOUNDS.register("cashshi",
+        () -> new SoundEvent(new ResourceLocation(MODID, "cashshi")));
+
+        //Disc
+    public static final RegistryObject<Item> CASH_DISC = ITEMS.register("cash_disc",
+        () -> new RecordItem(15, CASHIN.get(),
+                new Item.Properties()
+                        .tab(CreativeModeTab.TAB_MISC)
+                        .stacksTo(1)
+                        .rarity(Rarity.RARE),
+                3600));
+    
     public IAMMUSIC(FMLJavaModLoadingContext context)
     {
         IEventBus modEventBus = context.getModEventBus();
