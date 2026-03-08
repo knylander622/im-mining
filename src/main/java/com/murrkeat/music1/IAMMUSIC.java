@@ -1,59 +1,64 @@
 package com.murrkeat.music1;
 
+import org.slf4j.Logger;
+
 import com.mojang.logging.LogUtils;
+
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.item.BlockItem;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.item.RecordItem;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import org.slf4j.Logger;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.item.Rarity;
 
 // The value here should match an entry in the META-INF/mods.toml file
-@Mod(ExampleMod.MODID)
-public class ExampleMod
+@Mod(IAMMUSIC.MODID)
+public class IAMMUSIC
 {
     // Define mod id in a common place for everything to reference
-    public static final String MODID = "examplemod";
+    public static final String MODID = "iammusic";
     // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
     // Create a Deferred Register to hold Blocks which will all be registered under the "examplemod" namespace
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
-    // Create a Deferred Register to hold Items which will all be registered under the "examplemod" namespace
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
+    // Create a Deferred Register to hold Items which will all be registered under the "examplemod" namespace
+    public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MODID);
 
-    // Creates a new Block with the id "examplemod:example_block", combining the namespace and path
-    public static final RegistryObject<Block> EXAMPLE_BLOCK = BLOCKS.register("example_block", () -> new Block(BlockBehaviour.Properties.of(Material.STONE)));
-    // Creates a new BlockItem with the id "examplemod:example_block", combining the namespace and path
-    public static final RegistryObject<Item> EXAMPLE_BLOCK_ITEM = ITEMS.register("example_block", () -> new BlockItem(EXAMPLE_BLOCK.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS)));
+    public static final RegistryObject<SoundEvent> IAM_TRACK = SOUNDS.register("play_this",
+            () -> new SoundEvent(new ResourceLocation(MODID, "play_this")));
 
-    public ExampleMod(FMLJavaModLoadingContext context)
+    // Music disc item registration
+    public static final RegistryObject<Item> IAMMUSIC_DISC = ITEMS.register("iam_music_disc",
+        () -> new RecordItem(15, IAM_TRACK.get(),
+                new Item.Properties()
+                        .tab(CreativeModeTab.TAB_MISC)
+                        .stacksTo(1)
+                        .rarity(Rarity.RARE),
+                3600));
+
+    public IAMMUSIC(FMLJavaModLoadingContext context)
     {
         IEventBus modEventBus = context.getModEventBus();
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
-        // Register the Deferred Register to the mod event bus so blocks get registered
-        BLOCKS.register(modEventBus);
+        SOUNDS.register(modEventBus);
+
         // Register the Deferred Register to the mod event bus so items get registered
         ITEMS.register(modEventBus);
 
@@ -68,13 +73,6 @@ public class ExampleMod
     {
         // Some common setup code
         LOGGER.info("HELLO FROM COMMON SETUP");
-
-        if (Config.logDirtBlock)
-            LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
-
-        LOGGER.info(Config.magicNumberIntroduction + Config.magicNumber);
-
-        Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
@@ -82,7 +80,7 @@ public class ExampleMod
     public void onServerStarting(ServerStartingEvent event)
     {
         // Do something when the server starts
-        LOGGER.info("HELLO from server starting");
+        LOGGER.info("I AM THE MUSIC");
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
