@@ -3,5 +3,10 @@
         "sounds": [
             "iammusic:play_this"
         ]
+    },
+    "cashshi": {
+        "sounds": [
+            "iammusic:cashshi"
+        ]
     }
 }
