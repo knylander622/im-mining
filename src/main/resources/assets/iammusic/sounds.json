@@ -3,5 +3,10 @@
         "sounds": [
             "iammusic:play_this"
         ]
+    },
+    "ccr_hyestr": {
+        "sounds": [
+            "iammusic:ccr_hyestr"
+        ]
     }
 }
