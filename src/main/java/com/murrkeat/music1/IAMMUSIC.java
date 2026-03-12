@@ -55,12 +55,12 @@ public class IAMMUSIC
 
                 //Music Disc 2 Template:
                 //Sound
-    public static final RegistryObject<SoundEvent> CASHIN = SOUNDS.register("cashshi",
-        () -> new SoundEvent(new ResourceLocation(MODID, "cashshi")));
+    public static final RegistryObject<SoundEvent> HYESTR = SOUNDS.register("ccr_hyestr",
+        () -> new SoundEvent(new ResourceLocation(MODID, "ccr_hyestr")));
 
         //Disc
-    public static final RegistryObject<Item> CASH_DISC = ITEMS.register("cash_disc",
-        () -> new RecordItem(15, CASHIN.get(),
+    public static final RegistryObject<Item> HYESTR_DISC = ITEMS.register("ccr_hyestr_disc",
+        () -> new RecordItem(15, HYESTR.get(),
                 new Item.Properties()
                         .tab(CreativeModeTab.TAB_MISC)
                         .stacksTo(1)
